@@ -14,6 +14,7 @@
     "productName": "Bici Butler",
     "directories": { "output": "dist" },
     "files": ["src/**/*", "assets/**/*"],
+    "publish": "never",
     "mac": {
       "category": "public.app-category.sports",
       "icon": "assets/icon.icns",
