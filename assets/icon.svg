@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="1024" height="1024">
+  <!-- Background rounded square -->
+  <rect width="1024" height="1024" rx="230" ry="230" fill="#0f1220"/>
+
+  <!-- Argyle diamonds - bottom half background pattern -->
+  <!-- Row 1 - bottom -->
+  <polygon points="512,620 682,780 512,940 342,780" fill="#4a6bbd" opacity="0.7"/>
+  <polygon points="342,620 512,780 342,940 172,780" fill="#e8407a" opacity="0.7"/>
+  <polygon points="682,620 852,780 682,940 512,780" fill="#c9b8e8" opacity="0.6"/>
+  <!-- Row 2 -->
+  <polygon points="512,460 682,620 512,780 342,620" fill="#e8407a" opacity="0.85"/>
+  <polygon points="342,460 512,620 342,780 172,620" fill="#c9b8e8" opacity="0.6"/>
+  <polygon points="682,460 852,620 682,780 512,620" fill="#4a6bbd" opacity="0.85"/>
+  <!-- Row 3 - top partial -->
+  <polygon points="512,300 682,460 512,620 342,460" fill="#4a6bbd" opacity="0.5"/>
+  <polygon points="342,300 512,460 342,620 172,460" fill="#e8407a" opacity="0.5"/>
+  <polygon points="682,300 852,460 682,620 512,460" fill="#c9b8e8" opacity="0.4"/>
+
+  <!-- Dark overlay gradient top -->
+  <defs>
+    <linearGradient id="topFade" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#0f1220" stop-opacity="1"/>
+      <stop offset="55%" stop-color="#0f1220" stop-opacity="0.85"/>
+      <stop offset="100%" stop-color="#0f1220" stop-opacity="0.1"/>
+    </linearGradient>
+    <linearGradient id="botFade" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="70%" stop-color="#0f1220" stop-opacity="0"/>
+      <stop offset="100%" stop-color="#0f1220" stop-opacity="0.6"/>
+    </linearGradient>
+  </defs>
+  <rect width="1024" height="1024" rx="230" ry="230" fill="url(#topFade)"/>
+  <rect width="1024" height="1024" rx="230" ry="230" fill="url(#botFade)"/>
+
+  <!-- Bi in pink, Ci in white -->
+  <text x="512" y="390" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-weight="900" font-size="310" letter-spacing="-8">
+    <tspan fill="#e8407a">Bi</tspan><tspan fill="#ffffff">Ci</tspan>
+  </text>
+
+  <!-- Subtle tagline -->
+  <text x="512" y="468" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-weight="700" font-size="62" fill="rgba(255,255,255,0.35)" letter-spacing="8">BCC BUTLER</text>
+</svg>

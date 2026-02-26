@@ -1,0 +1,288 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Bici — BCC Butler</title>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { width: 100%; height: 100%; background: rgba(10,12,18,.95); color: #fff; font-family: system-ui, -apple-system, sans-serif; overflow: hidden; }
+.hud { width: 100%; height: 100%; display: flex; flex-direction: column; }
+
+/* ARGYLE HEADER */
+.header {
+  flex-shrink:0; position:relative; overflow:hidden;
+  display:flex; align-items:center; justify-content:space-between;
+  padding:1.8vmin 2.5vmin;
+  background:#0f1220;
+  border-bottom:1px solid rgba(255,255,255,.08);
+}
+.header::before {
+  content:''; position:absolute; left:0; top:0; bottom:0; width:50%;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='34'%3E%3Cpolygon points='15,0 30,17 15,34 0,17' fill='%23e8407a' opacity='.9'/%3E%3Cpolygon points='30,0 45,17 30,34 15,17' fill='%234a6bbd' opacity='.9'/%3E%3Cpolygon points='45,0 60,17 45,34 30,17' fill='%23c9b8e8' opacity='.7'/%3E%3Cpolygon points='0,0 15,17 0,34' fill='%23c9b8e8' opacity='.5'/%3E%3C/svg%3E");
+  background-size:auto 100%; background-repeat:repeat-x;
+  mask-image:linear-gradient(90deg,rgba(0,0,0,.55) 0%,transparent 100%);
+  -webkit-mask-image:linear-gradient(90deg,rgba(0,0,0,.55) 0%,transparent 100%);
+  pointer-events:none;
+}
+.brand { font-size:clamp(11px,2vmin,16px); font-weight:900; letter-spacing:2px; color:#fff; text-transform:uppercase; position:relative; z-index:1; }
+.brand em { color:#e8407a; font-style:normal; }
+.live-badge { display:flex; align-items:center; gap:5px; background:rgba(0,212,170,.12); border:1px solid rgba(0,212,170,.3); border-radius:999px; padding:3px 10px; font-size:clamp(9px,1.5vmin,12px); font-weight:800; color:#00d4aa; position:relative; z-index:1; }
+.wait-badge { display:flex; align-items:center; gap:5px; background:rgba(255,255,255,.05); border:1px solid rgba(255,255,255,.1); border-radius:999px; padding:3px 10px; font-size:clamp(9px,1.5vmin,12px); font-weight:800; color:#555; position:relative; z-index:1; }
+.dot { width:6px; height:6px; border-radius:50%; background:#00d4aa; animation:pulse 1.4s infinite; }
+@keyframes pulse { 0%{box-shadow:0 0 0 0 rgba(0,212,170,.5);}70%{box-shadow:0 0 0 7px rgba(0,212,170,0);}100%{box-shadow:0 0 0 0 rgba(0,212,170,0);} }
+
+/* STEP + TIME */
+.step-block { padding:0 2.5vmin 2vmin; flex-shrink:0; border-bottom:1px solid rgba(255,255,255,.08); }
+.step-name { font-size:clamp(14px,3.5vmin,32px); font-weight:900; margin-bottom:.6vmin; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.step-row { display:flex; align-items:center; justify-content:space-between; }
+.remain { font-size:clamp(14px,3.5vmin,32px); font-weight:900; font-variant-numeric:tabular-nums; }
+.range { font-size:clamp(10px,2vmin,17px); font-weight:800; padding:3px 10px; border-radius:999px; }
+.range.good { background:rgba(0,212,170,.15); border:1px solid rgba(0,212,170,.3); color:#00d4aa; }
+.range.warn  { background:rgba(242,193,78,.15); border:1px solid rgba(242,193,78,.3); color:#f2c14e; }
+.range.bad   { background:rgba(255,80,80,.15); border:1px solid rgba(255,80,80,.3); color:#ff5050; }
+.range.none  { background:rgba(255,255,255,.05); border:1px solid rgba(255,255,255,.1); color:#555; }
+
+/* WATTS */
+.watts-block { display:flex; flex-direction:column; align-items:center; justify-content:center; flex:2; position:relative; border-bottom:1px solid rgba(255,255,255,.08); min-height:0; }
+.watts-block::before { content:''; position:absolute; top:0; left:0; right:0; height:3px; background:#00d4aa; }
+.watts-label { font-size:clamp(10px,1.8vmin,15px); font-weight:700; letter-spacing:2px; text-transform:uppercase; color:rgba(255,255,255,.5); margin-bottom:.5vmin; }
+.watts-val { font-size:clamp(60px,18vmin,180px); font-weight:900; line-height:1; font-variant-numeric:tabular-nums; color:#00d4aa; }
+
+/* CAD + HR */
+.sub-metrics { display:grid; grid-template-columns:1fr 1fr; flex:1; min-height:0; border-bottom:1px solid rgba(255,255,255,.08); }
+.sm { display:flex; flex-direction:column; align-items:center; justify-content:center; padding:1vmin; gap:.4vmin; position:relative; }
+.sm:first-child { border-right:1px solid rgba(255,255,255,.08); }
+.sm::before { content:''; position:absolute; top:0; left:0; right:0; height:3px; }
+.sm.cad::before { background:#8aa6ff; }
+.sm.hr::before  { background:#f472b6; }
+.sm-label { font-size:clamp(9px,1.6vmin,14px); font-weight:700; letter-spacing:1.5px; text-transform:uppercase; color:rgba(255,255,255,.5); }
+.sm-val { font-size:clamp(28px,8vmin,80px); font-weight:900; line-height:1; font-variant-numeric:tabular-nums; }
+.sm.cad .sm-val { color:#8aa6ff; }
+.sm.hr  .sm-val { color:#f472b6; }
+
+/* AVERAGES */
+.avgs { display:grid; grid-template-columns:1fr 1fr 1fr 1fr; flex-shrink:0; border-bottom:1px solid rgba(255,255,255,.08); }
+.av { display:flex; flex-direction:column; align-items:center; justify-content:center; padding:1.5vmin .5vmin; border-right:1px solid rgba(255,255,255,.08); }
+.av:last-child { border-right:none; }
+.av-label { font-size:clamp(8px,1.4vmin,12px); font-weight:700; letter-spacing:.8px; text-transform:uppercase; color:rgba(255,255,255,.45); margin-bottom:2px; }
+.av-val { font-size:clamp(16px,4vmin,36px); font-weight:900; font-variant-numeric:tabular-nums; color:rgba(255,255,255,.8); }
+
+/* WORKOUT STRIP */
+.workout-strip { flex-shrink:0; overflow-y:auto; max-height:28vh; border-bottom:1px solid rgba(255,255,255,.08); scrollbar-width:none; }
+.workout-strip::-webkit-scrollbar { display:none; }
+.ws-row { display:flex; align-items:center; gap:1.5vmin; padding:1.2vmin 2.5vmin; border-bottom:1px solid rgba(255,255,255,.05); font-size:clamp(10px,1.8vmin,15px); color:rgba(255,255,255,.4); font-weight:600; }
+.ws-row.current { background:rgba(255,255,255,.06); color:#fff; font-weight:800; }
+.ws-row.done { opacity:.3; }
+.ws-dot { width:clamp(8px,1.4vmin,12px); height:clamp(8px,1.4vmin,12px); border-radius:50%; flex-shrink:0; }
+.ws-label { flex:1; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.ws-dur { font-size:clamp(9px,1.5vmin,13px); color:rgba(255,255,255,.3); flex-shrink:0; }
+.ws-row.current .ws-dur { color:rgba(255,255,255,.6); }
+.zone-sprint     { background:#ff5050; }
+.zone-activation { background:#ff8c42; }
+.zone-threshold  { background:#f2c14e; }
+.zone-sweetspot  { background:#a8e063; }
+.zone-endurance  { background:#00d4aa; }
+.zone-tempo      { background:#8aa6ff; }
+.zone-recovery   { background:#6b7280; }
+.zone-warmup     { background:#4a5568; }
+
+/* BICI BUBBLE */
+.bici-wrap { padding:1.5vmin 2.5vmin; flex-shrink:0; display:flex; align-items:center; }
+.bici-bubble {
+  display:inline-block; position:relative;
+  background:rgba(255,255,255,.08); border:1px solid rgba(255,255,255,.18);
+  border-radius:999px;
+  padding:clamp(6px,1.2vmin,12px) clamp(12px,2.5vmin,24px);
+  font-size:clamp(12px,2.4vmin,22px); font-weight:700; font-style:italic;
+  color:rgba(255,255,255,.85); letter-spacing:.2px;
+}
+.bici-bubble::before {
+  content:''; position:absolute; bottom:-8px; left:20px;
+  width:10px; height:10px;
+  background:rgba(255,255,255,.08);
+  border-right:1px solid rgba(255,255,255,.18);
+  border-bottom:1px solid rgba(255,255,255,.18);
+  transform:rotate(45deg);
+  clip-path:polygon(0 0,100% 100%,0 100%);
+}
+</style>
+</head>
+<body>
+<div class="hud">
+
+  <div class="header">
+    <div class="brand"><em>Bi</em>Ci · BCC Butler</div>
+    <div class="wait-badge" id="badge">WAIT</div>
+  </div>
+
+  <div class="step-block">
+    <div class="step-name" id="step-name">—</div>
+    <div class="step-row">
+      <div class="remain" id="remain">—</div>
+      <span class="range none" id="range">Waiting…</span>
+    </div>
+  </div>
+
+  <div class="watts-block">
+    <div class="watts-label">Watts</div>
+    <div class="watts-val" id="pwr">—</div>
+  </div>
+
+  <div class="sub-metrics">
+    <div class="sm cad"><div class="sm-label">RPM</div><div class="sm-val" id="cad">—</div></div>
+    <div class="sm hr"><div class="sm-label">BPM</div><div class="sm-val" id="hr">—</div></div>
+  </div>
+
+  <div class="avgs">
+    <div class="av"><div class="av-label">Avg W</div><div class="av-val" id="avgp">—</div></div>
+    <div class="av"><div class="av-label">Avg Cad</div><div class="av-val" id="avgc">—</div></div>
+    <div class="av"><div class="av-label">Avg HR</div><div class="av-val" id="avgh">—</div></div>
+    <div class="av"><div class="av-label">NP</div><div class="av-val" id="np">—</div></div>
+  </div>
+
+  <div class="workout-strip" id="workout-strip"></div>
+
+  <div class="bici-wrap"><div class="bici-bubble" id="bici">Right then. Let's get the legs movin'.</div></div>
+
+</div>
+<script>
+function fmt(sec) {
+  const m = Math.floor(sec/60), s = sec%60;
+  return m + ':' + String(s).padStart(2,'0');
+}
+
+function pick(arr) { return arr[Math.floor(Math.random() * arr.length)]; }
+const PHRASES = {
+  sprint_good:    ["There he is! Pure class!", "Aye, THAT'S the one!", "Beautiful. Absolutely beautiful.", "Now we're talkin'!", "Look at ye go, ya rocket!"],
+  sprint_low:     ["Is that it? Is that ALL ye've got?", "Ma granny goes faster on her way tae the shops.", "Come on, dig in! This isnae a Sunday stroll!", "Ye call that a sprint?! DIG.", "More. NOW. Don't ye dare ease off."],
+  threshold_good: ["Aye, that'll do nicely.", "Right on the money. Keep it there.", "Smooth. Controlled. Just like that.", "That's the zone. Stay in it.", "Perfection. Don't touch a thing."],
+  threshold_high: ["Steady on, ye daft wee sprinter.", "Save somethin' for later, aye?", "Ye're gettin' carried away. Wind it back.", "Easy tiger. It's a long ride yet."],
+  threshold_low:  ["Come on now, a wee bit more.", "Ye're driftin'. Pull it back up.", "That's no' threshold. That's a Sunday ride.", "Ye're better than this. Show me."],
+  threshold_bad:  ["Och, come on! That's nowhere near it.", "Ma granny climbs faster than that.", "We're doing THRESHOLD here, not a nap.", "Right, enough of this. PUSH."],
+  sweetspot_good: ["Aye, sweet spot. Right where ye want tae be.", "Comfortable discomfort. That's the game.", "That's it. Sit there and suffer nicely."],
+  sweetspot_high: ["A touch high. Nudge it down.", "Ye're pushin' intae threshold. Easy."],
+  sweetspot_low:  ["A wee bit more. Sweet spot's higher than that.", "Come on, it's meant tae hurt a little."],
+  endurance_good: ["Settle in. Long game.", "Aye, nice and steady.", "Good rhythm. Keep it rollin'.", "This is where fitness is built. Stay here."],
+  endurance_low:  ["Bit easy that. A touch more.", "Ye can go a wee bit harder than that.", "Endurance, not recovery. Up a notch."],
+  tempo_good:     ["Tempo. Control it.", "Solid effort. Stay focused.", "Aye, that's tempo. Breathe and push."],
+  tempo_low:      ["A bit more pace please.", "That's drifted too low. Come on.", "Tempo needs more than that."],
+  recovery_good:  ["Aye, breathe. Ye've earned this.", "Recover properly. Next one's comin'.", "Good. Let the legs settle.", "Rest up. Ye'll need it."],
+  warmup_good:    ["Right then. Let's get the legs movin'.", "Easy does it. We're just wakin' up.", "Warmup. Dinnae be a hero yet.", "Gentle. Plenty of time for suffering later."],
+  cooldown_good:  ["Aye, wind it down. Well done.", "That's the session. Spin it out.", "Good work today. Cool down properly."],
+};
+function biciLine(pct, zone) {
+  if (!zone) return pick(["Right then.", "Let's go."]);
+  if (zone === 'warmup')   return pick(PHRASES.warmup_good);
+  if (zone === 'cooldown') return pick(PHRASES.cooldown_good);
+  if (zone === 'recovery') return pick(PHRASES.recovery_good);
+  if (zone === 'sprint' || zone === 'activation')
+    return pct >= 88 ? pick(PHRASES.sprint_good) : pick(PHRASES.sprint_low);
+  if (zone === 'threshold') {
+    if (pct >= 110) return pick(PHRASES.threshold_high);
+    if (pct >= 100) return pick(PHRASES.threshold_good);
+    if (pct >= 90)  return pick(PHRASES.threshold_low);
+    return pick(PHRASES.threshold_bad);
+  }
+  if (zone === 'sweetspot') {
+    if (pct >= 108) return pick(PHRASES.sweetspot_high);
+    if (pct >= 95)  return pick(PHRASES.sweetspot_good);
+    return pick(PHRASES.sweetspot_low);
+  }
+  if (zone === 'endurance') return pct >= 95 ? pick(PHRASES.endurance_good) : pick(PHRASES.endurance_low);
+  if (zone === 'tempo')     return pct >= 95 ? pick(PHRASES.tempo_good) : pick(PHRASES.tempo_low);
+  return pick(PHRASES.endurance_good);
+}
+
+let lastStepIndex = -1;
+let stepsRendered = false;
+let lastBiciUpdate = 0;
+
+function renderStrip(steps, currentIdx) {
+  const strip = document.getElementById('workout-strip');
+  if (!steps || steps.length === 0) { strip.innerHTML = ''; return; }
+  if (!stepsRendered) {
+    strip.innerHTML = steps.map((s, i) => `
+      <div class="ws-row ${i===currentIdx?'current':i<currentIdx?'done':''}" id="ws-${i}">
+        <div class="ws-dot zone-${s.zone}"></div>
+        <div class="ws-label">${s.label}</div>
+        <div class="ws-dur">${fmtDur(s.duration)}</div>
+      </div>`).join('');
+    stepsRendered = true;
+  }
+  if (currentIdx !== lastStepIndex) {
+    steps.forEach((_, i) => {
+      const row = document.getElementById('ws-' + i);
+      if (row) row.className = 'ws-row ' + (i===currentIdx?'current':i<currentIdx?'done':'');
+    });
+    const cur = document.getElementById('ws-' + currentIdx);
+    if (cur) cur.scrollIntoView({block:'nearest', behavior:'smooth'});
+    lastStepIndex = currentIdx;
+  }
+}
+
+function fmtDur(sec) {
+  const m = Math.floor(sec/60), s = sec%60;
+  return s === 0 ? m+'m' : m+'m'+s+'s';
+}
+
+async function tick() {
+  try {
+    const r = await fetch('/status');
+    const s = await r.json();
+    const badge = document.getElementById('badge');
+
+    renderStrip(s.steps, s.step_index);
+
+    if (!s.ok || !s.payload) {
+      badge.className = 'wait-badge'; badge.textContent = 'WAIT'; return;
+    }
+    badge.className = 'live-badge';
+    badge.innerHTML = '<div class="dot"></div>LIVE';
+
+    const d = Array.isArray(s.payload) ? s.payload[0] : s.payload;
+    const pwr = d.power ?? null;
+    document.getElementById('pwr').textContent  = pwr ?? '—';
+    document.getElementById('cad').textContent  = d.cadence ?? '—';
+    document.getElementById('hr').textContent   = d.heartrate ?? '—';
+    document.getElementById('avgp').textContent = d.avgPower ?? '—';
+    document.getElementById('avgc').textContent = d.avgCadence ?? '—';
+    document.getElementById('avgh').textContent = d.avgHeartrate ?? '—';
+    document.getElementById('np').textContent   = d.nrmPower ?? '—';
+
+    const step = s.step;
+    if (step) {
+      document.getElementById('step-name').textContent = step.label;
+      document.getElementById('remain').textContent    = fmt(step.remaining_sec);
+      let pct = null, rt = '—', rc = 'none';
+      if (pwr !== null && step.target_lo > 0) {
+        const mid = (step.target_lo + step.target_hi) / 2;
+        pct = Math.round((pwr / mid) * 100);
+        if (pct >= 95 && pct <= 110) { rt = '● In range · ' + pct + '%'; rc = 'good'; }
+        else if (pct > 110)          { rt = '● High · ' + pct + '%';     rc = 'warn'; }
+        else                         { rt = '● Low · ' + pct + '%';      rc = 'bad';  }
+      }
+      const re = document.getElementById('range');
+      re.textContent = rt; re.className = 'range ' + rc;
+      // update bici every 15 seconds or on step change
+      const now = Date.now();
+      if (now - lastBiciUpdate > 15000 || s.step_index !== lastStepIndex) {
+        document.getElementById('bici').textContent = biciLine(pct, step.zone);
+        lastBiciUpdate = now;
+      }
+    } else {
+      document.getElementById('step-name').textContent = 'Free ride';
+      document.getElementById('remain').textContent = '';
+      document.getElementById('range').textContent = '—';
+      document.getElementById('range').className = 'range none';
+    }
+  } catch(e) {
+    document.getElementById('badge').className = 'wait-badge';
+    document.getElementById('badge').textContent = 'WAIT';
+  }
+}
+setInterval(tick, 200);
+tick();
+</script>
+</body>
+</html>

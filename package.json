@@ -1,0 +1,40 @@
+{
+  "name": "bici-butler",
+  "version": "1.0.0",
+  "description": "BCC Butler — ride HUD for TrainingPeaks Virtual",
+  "main": "src/main.js",
+  "scripts": {
+    "start": "electron .",
+    "build:mac": "electron-builder --mac",
+    "build:win": "electron-builder --win",
+    "build:all": "electron-builder --mac --win"
+  },
+  "build": {
+    "appId": "club.bcc.bici-butler",
+    "productName": "Bici Butler",
+    "directories": { "output": "dist" },
+    "files": ["src/**/*", "assets/**/*"],
+    "mac": {
+      "category": "public.app-category.sports",
+      "icon": "assets/icon.icns",
+      "target": [{ "target": "dmg", "arch": ["x64", "arm64"] }]
+    },
+    "win": {
+      "icon": "assets/icon.ico",
+      "target": [{ "target": "nsis", "arch": ["x64"] }]
+    },
+    "nsis": {
+      "oneClick": true,
+      "perMachine": false
+    }
+  },
+  "devDependencies": {
+    "electron": "^28.0.0",
+    "electron-builder": "^24.0.0"
+  },
+  "dependencies": {
+    "express": "^4.18.0",
+    "chokidar": "^3.5.0",
+    "electron-store": "^8.1.0"
+  }
+}
