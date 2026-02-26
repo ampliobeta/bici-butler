@@ -5,16 +5,15 @@
   "main": "src/main.js",
   "scripts": {
     "start": "electron .",
-    "build:mac": "electron-builder --mac",
-    "build:win": "electron-builder --win",
-    "build:all": "electron-builder --mac --win"
+    "build:mac": "electron-builder --mac --publish never",
+    "build:win": "electron-builder --win --publish never",
+    "build:all": "electron-builder --mac --win --publish never"
   },
   "build": {
     "appId": "club.bcc.bici-butler",
     "productName": "Bici Butler",
     "directories": { "output": "dist" },
     "files": ["src/**/*", "assets/**/*"],
-    "publish": "never",
     "mac": {
       "category": "public.app-category.sports",
       "icon": "assets/icon.icns",
