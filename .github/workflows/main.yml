@@ -29,17 +29,22 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      - name: Write notarize key
+      - name: Build Mac
+        run: npm run build:mac
+
+      - name: Notarize
         env:
           NOTARIZE_KEY: ${{ secrets.NOTARIZE_KEY }}
-        run: echo $NOTARIZE_KEY | base64 --decode > /tmp/api_key.p8
-
-      - name: Build Mac
-        env:
-          APPLE_API_KEY: /tmp/api_key.p8
-          APPLE_API_KEY_ID: ${{ secrets.NOTARIZE_KEY_ID }}
-          APPLE_API_ISSUER: ${{ secrets.NOTARIZE_ISSUER_ID }}
-        run: npm run build:mac
+          NOTARIZE_KEY_ID: ${{ secrets.NOTARIZE_KEY_ID }}
+          NOTARIZE_ISSUER_ID: ${{ secrets.NOTARIZE_ISSUER_ID }}
+        run: |
+          echo $NOTARIZE_KEY | base64 --decode > /tmp/api_key.p8
+          xcrun notarytool submit dist/*.dmg \
+            --key /tmp/api_key.p8 \
+            --key-id $NOTARIZE_KEY_ID \
+            --issuer $NOTARIZE_ISSUER_ID \
+            --wait
+          xcrun stapler staple dist/*.dmg
 
       - name: Upload Mac artifact
         uses: actions/upload-artifact@v4
