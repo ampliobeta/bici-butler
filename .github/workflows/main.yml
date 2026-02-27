@@ -44,7 +44,8 @@ jobs:
             --key /tmp/api_key.p8 \
             --key-id $NOTARIZE_KEY_ID \
             --issuer $NOTARIZE_ISSUER_ID \
-            --wait
+            --wait \
+            --timeout 10m
           xcrun stapler staple "$DMG"
 
       - name: Upload Mac artifact
