@@ -17,6 +17,9 @@
     "mac": {
       "category": "public.app-category.sports",
       "icon": "assets/icon.icns",
+      "notarize": {
+        "teamId": "7674HT2KMP"
+      },
       "target": [{ "target": "dmg", "arch": ["x64", "arm64"] }]
     },
     "win": {
