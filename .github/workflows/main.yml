@@ -39,12 +39,13 @@ jobs:
           NOTARIZE_ISSUER_ID: ${{ secrets.NOTARIZE_ISSUER_ID }}
         run: |
           echo $NOTARIZE_KEY | base64 --decode > /tmp/api_key.p8
-          xcrun notarytool submit dist/*.dmg \
+          DMG=$(ls dist/*.dmg | head -1)
+          xcrun notarytool submit "$DMG" \
             --key /tmp/api_key.p8 \
             --key-id $NOTARIZE_KEY_ID \
             --issuer $NOTARIZE_ISSUER_ID \
             --wait
-          xcrun stapler staple dist/*.dmg
+          xcrun stapler staple "$DMG"
 
       - name: Upload Mac artifact
         uses: actions/upload-artifact@v4
