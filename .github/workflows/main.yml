@@ -36,7 +36,7 @@ jobs:
 
       - name: Build Mac
         env:
-          APPLE_API_KEY: /tmp/api_key.p8
+          APPLE_API_KEY_PATH: /tmp/api_key.p8
           APPLE_API_KEY_ID: ${{ secrets.NOTARIZE_KEY_ID }}
           APPLE_API_ISSUER: ${{ secrets.NOTARIZE_ISSUER_ID }}
         run: npm run build:mac
