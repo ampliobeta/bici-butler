@@ -21,6 +21,7 @@
       "gatekeeperAssess": false,
       "entitlements": "entitlements.plist",
       "entitlementsInherit": "entitlements.plist",
+      "notarize": false,
       "target": [{ "target": "dmg", "arch": ["x64", "arm64"] }]
     },
     "win": {
