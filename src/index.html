@@ -9,31 +9,8 @@
 html, body { width: 100%; height: 100%; background: rgba(10,12,18,.95); color: #fff; font-family: system-ui, -apple-system, sans-serif; overflow: hidden; }
 .hud { width: 100%; height: 100%; display: flex; flex-direction: column; }
 
-/* ARGYLE HEADER */
-.header {
-  flex-shrink:0; position:relative; overflow:hidden;
-  display:flex; align-items:center; justify-content:space-between;
-  padding:1.8vmin 2.5vmin;
-  background:#0f1220;
-  border-bottom:1px solid rgba(255,255,255,.08);
-}
-.header::before {
-  content:''; position:absolute; left:0; top:0; bottom:0; width:50%;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='34'%3E%3Cpolygon points='15,0 30,17 15,34 0,17' fill='%23e8407a' opacity='.9'/%3E%3Cpolygon points='30,0 45,17 30,34 15,17' fill='%234a6bbd' opacity='.9'/%3E%3Cpolygon points='45,0 60,17 45,34 30,17' fill='%23c9b8e8' opacity='.7'/%3E%3Cpolygon points='0,0 15,17 0,34' fill='%23c9b8e8' opacity='.5'/%3E%3C/svg%3E");
-  background-size:auto 100%; background-repeat:repeat-x;
-  mask-image:linear-gradient(90deg,rgba(0,0,0,.55) 0%,transparent 100%);
-  -webkit-mask-image:linear-gradient(90deg,rgba(0,0,0,.55) 0%,transparent 100%);
-  pointer-events:none;
-}
-.brand { font-size:clamp(11px,2vmin,16px); font-weight:900; letter-spacing:2px; color:#fff; text-transform:uppercase; position:relative; z-index:1; }
-.brand em { color:#e8407a; font-style:normal; }
-.live-badge { display:flex; align-items:center; gap:5px; background:rgba(0,212,170,.12); border:1px solid rgba(0,212,170,.3); border-radius:999px; padding:3px 10px; font-size:clamp(9px,1.5vmin,12px); font-weight:800; color:#00d4aa; position:relative; z-index:1; }
-.wait-badge { display:flex; align-items:center; gap:5px; background:rgba(255,255,255,.05); border:1px solid rgba(255,255,255,.1); border-radius:999px; padding:3px 10px; font-size:clamp(9px,1.5vmin,12px); font-weight:800; color:#555; position:relative; z-index:1; }
-.dot { width:6px; height:6px; border-radius:50%; background:#00d4aa; animation:pulse 1.4s infinite; }
-@keyframes pulse { 0%{box-shadow:0 0 0 0 rgba(0,212,170,.5);}70%{box-shadow:0 0 0 7px rgba(0,212,170,0);}100%{box-shadow:0 0 0 0 rgba(0,212,170,0);} }
-
 /* STEP + TIME */
-.step-block { padding:0 2.5vmin 2vmin; flex-shrink:0; border-bottom:1px solid rgba(255,255,255,.08); }
+.step-block { padding:1.5vmin 2.5vmin 2vmin; flex-shrink:0; border-bottom:1px solid rgba(255,255,255,.08); }
 .step-name { font-size:clamp(14px,3.5vmin,32px); font-weight:900; margin-bottom:.6vmin; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
 .step-row { display:flex; align-items:center; justify-content:space-between; }
 .remain { font-size:clamp(14px,3.5vmin,32px); font-weight:900; font-variant-numeric:tabular-nums; }
@@ -42,6 +19,12 @@ html, body { width: 100%; height: 100%; background: rgba(10,12,18,.95); color: #
 .range.warn  { background:rgba(242,193,78,.15); border:1px solid rgba(242,193,78,.3); color:#f2c14e; }
 .range.bad   { background:rgba(255,80,80,.15); border:1px solid rgba(255,80,80,.3); color:#ff5050; }
 .range.none  { background:rgba(255,255,255,.05); border:1px solid rgba(255,255,255,.1); color:#555; }
+
+/* STATUS BADGE */
+.live-badge { display:inline-flex; align-items:center; gap:5px; background:rgba(0,212,170,.12); border:1px solid rgba(0,212,170,.3); border-radius:999px; padding:3px 10px; font-size:clamp(9px,1.5vmin,12px); font-weight:800; color:#00d4aa; }
+.wait-badge { display:inline-flex; align-items:center; gap:5px; background:rgba(255,255,255,.05); border:1px solid rgba(255,255,255,.1); border-radius:999px; padding:3px 10px; font-size:clamp(9px,1.5vmin,12px); font-weight:800; color:#555; }
+.dot { width:6px; height:6px; border-radius:50%; background:#00d4aa; animation:pulse 1.4s infinite; }
+@keyframes pulse { 0%{box-shadow:0 0 0 0 rgba(0,212,170,.5);}70%{box-shadow:0 0 0 7px rgba(0,212,170,0);}100%{box-shadow:0 0 0 0 rgba(0,212,170,0);} }
 
 /* WATTS */
 .watts-block { display:flex; flex-direction:column; align-items:center; justify-content:center; flex:2; position:relative; border-bottom:1px solid rgba(255,255,255,.08); min-height:0; }
@@ -88,7 +71,7 @@ html, body { width: 100%; height: 100%; background: rgba(10,12,18,.95); color: #
 .zone-warmup     { background:#4a5568; }
 
 /* BICI BUBBLE */
-.bici-wrap { padding:1.5vmin 2.5vmin; flex-shrink:0; display:flex; align-items:center; }
+.bici-wrap { padding:1.5vmin 2.5vmin; flex-shrink:0; display:flex; align-items:center; justify-content:space-between; }
 .bici-bubble {
   display:inline-block; position:relative;
   background:rgba(255,255,255,.08); border:1px solid rgba(255,255,255,.18);
@@ -111,13 +94,11 @@ html, body { width: 100%; height: 100%; background: rgba(10,12,18,.95); color: #
 <body>
 <div class="hud">
 
-  <div class="header">
-    <div class="brand"><em>Bi</em>Ci · BCC Butler</div>
-    <div class="wait-badge" id="badge">WAIT</div>
-  </div>
-
   <div class="step-block">
-    <div class="step-name" id="step-name">—</div>
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:.6vmin;">
+      <div class="step-name" id="step-name">—</div>
+      <div class="wait-badge" id="badge">WAIT</div>
+    </div>
     <div class="step-row">
       <div class="remain" id="remain">—</div>
       <span class="range none" id="range">Waiting…</span>
@@ -143,7 +124,9 @@ html, body { width: 100%; height: 100%; background: rgba(10,12,18,.95); color: #
 
   <div class="workout-strip" id="workout-strip"></div>
 
-  <div class="bici-wrap"><div class="bici-bubble" id="bici">Right then. Let's get the legs movin'.</div></div>
+  <div class="bici-wrap">
+    <div class="bici-bubble" id="bici">Right then. Let's get the legs movin'.</div>
+  </div>
 
 </div>
 <script>
@@ -264,7 +247,6 @@ async function tick() {
       }
       const re = document.getElementById('range');
       re.textContent = rt; re.className = 'range ' + rc;
-      // update bici every 15 seconds or on step change
       const now = Date.now();
       if (now - lastBiciUpdate > 15000 || s.step_index !== lastStepIndex) {
         document.getElementById('bici').textContent = biciLine(pct, step.zone);
