@@ -183,15 +183,32 @@ function createSetupWindow() {
 
 // ── Main HUD window ───────────────────────────────────────────
 function createMainWindow() {
+  const savedBounds = store.get('windowBounds', { width: 380, height: 680, x: undefined, y: undefined });
   mainWindow = new BrowserWindow({
-    width: 400, height: 760,
+    width: savedBounds.width,
+    height: savedBounds.height,
+    x: savedBounds.x,
+    y: savedBounds.y,
     minWidth: 280, minHeight: 480,
-    titleBarStyle: 'hiddenInset',
+    titleBarStyle: 'default',
     backgroundColor: '#0a0c12',
     alwaysOnTop: true,
+    movable: true,
+    resizable: true,
     webPreferences: { nodeIntegration: false, contextIsolation: true }
   });
   mainWindow.loadURL('http://127.0.0.1:8787');
+
+  // Save position and size when window moves or resizes
+  mainWindow.on('moved', () => {
+    const bounds = mainWindow.getBounds();
+    store.set('windowBounds', bounds);
+  });
+  mainWindow.on('resized', () => {
+    const bounds = mainWindow.getBounds();
+    store.set('windowBounds', bounds);
+  });
+
   mainWindow.on('closed', () => { mainWindow = null; });
 }
 
