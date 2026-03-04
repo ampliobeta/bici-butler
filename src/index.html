@@ -10,56 +10,56 @@ html, body { width: 100%; height: 100%; background: rgba(10,12,18,.95); color: #
 .hud { width: 100%; height: 100%; display: flex; flex-direction: column; }
 
 /* STEP + TIME */
-.step-block { padding:1.5vmin 2.5vmin 2vmin; flex-shrink:0; border-bottom:1px solid rgba(255,255,255,.08); }
-.step-name { font-size:clamp(14px,3.5vmin,32px); font-weight:900; margin-bottom:.6vmin; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.step-block { padding:1.2vmin 2.5vmin 1.2vmin; flex-shrink:0; border-bottom:1px solid rgba(255,255,255,.08); }
+.step-name { font-size:clamp(12px,2.8vmin,26px); font-weight:900; margin-bottom:.4vmin; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
 .step-row { display:flex; align-items:center; justify-content:space-between; }
-.remain { font-size:clamp(14px,3.5vmin,32px); font-weight:900; font-variant-numeric:tabular-nums; }
-.range { font-size:clamp(10px,2vmin,17px); font-weight:800; padding:3px 10px; border-radius:999px; }
+.remain { font-size:clamp(12px,2.8vmin,26px); font-weight:900; font-variant-numeric:tabular-nums; }
+.range { font-size:clamp(9px,1.6vmin,14px); font-weight:800; padding:2px 8px; border-radius:999px; }
 .range.good { background:rgba(0,212,170,.15); border:1px solid rgba(0,212,170,.3); color:#00d4aa; }
 .range.warn  { background:rgba(242,193,78,.15); border:1px solid rgba(242,193,78,.3); color:#f2c14e; }
 .range.bad   { background:rgba(255,80,80,.15); border:1px solid rgba(255,80,80,.3); color:#ff5050; }
 .range.none  { background:rgba(255,255,255,.05); border:1px solid rgba(255,255,255,.1); color:#555; }
 
 /* STATUS BADGE */
-.live-badge { display:inline-flex; align-items:center; gap:5px; background:rgba(0,212,170,.12); border:1px solid rgba(0,212,170,.3); border-radius:999px; padding:3px 10px; font-size:clamp(9px,1.5vmin,12px); font-weight:800; color:#00d4aa; }
-.wait-badge { display:inline-flex; align-items:center; gap:5px; background:rgba(255,255,255,.05); border:1px solid rgba(255,255,255,.1); border-radius:999px; padding:3px 10px; font-size:clamp(9px,1.5vmin,12px); font-weight:800; color:#555; }
+.live-badge { display:inline-flex; align-items:center; gap:5px; background:rgba(0,212,170,.12); border:1px solid rgba(0,212,170,.3); border-radius:999px; padding:2px 8px; font-size:clamp(9px,1.4vmin,11px); font-weight:800; color:#00d4aa; }
+.wait-badge { display:inline-flex; align-items:center; gap:5px; background:rgba(255,255,255,.05); border:1px solid rgba(255,255,255,.1); border-radius:999px; padding:2px 8px; font-size:clamp(9px,1.4vmin,11px); font-weight:800; color:#555; }
 .dot { width:6px; height:6px; border-radius:50%; background:#00d4aa; animation:pulse 1.4s infinite; }
 @keyframes pulse { 0%{box-shadow:0 0 0 0 rgba(0,212,170,.5);}70%{box-shadow:0 0 0 7px rgba(0,212,170,0);}100%{box-shadow:0 0 0 0 rgba(0,212,170,0);} }
 
 /* WATTS */
-.watts-block { display:flex; flex-direction:column; align-items:center; justify-content:center; flex:2; position:relative; border-bottom:1px solid rgba(255,255,255,.08); min-height:0; }
+.watts-block { display:flex; flex-direction:column; align-items:center; justify-content:center; flex:1.2; position:relative; border-bottom:1px solid rgba(255,255,255,.08); min-height:0; }
 .watts-block::before { content:''; position:absolute; top:0; left:0; right:0; height:3px; background:#00d4aa; }
-.watts-label { font-size:clamp(10px,1.8vmin,15px); font-weight:700; letter-spacing:2px; text-transform:uppercase; color:rgba(255,255,255,.5); margin-bottom:.5vmin; }
-.watts-val { font-size:clamp(60px,18vmin,180px); font-weight:900; line-height:1; font-variant-numeric:tabular-nums; color:#00d4aa; }
+.watts-label { font-size:clamp(9px,1.5vmin,13px); font-weight:700; letter-spacing:2px; text-transform:uppercase; color:rgba(255,255,255,.5); margin-bottom:.3vmin; }
+.watts-val { font-size:clamp(50px,14vmin,140px); font-weight:900; line-height:1; font-variant-numeric:tabular-nums; color:#00d4aa; }
 
 /* CAD + HR */
 .sub-metrics { display:grid; grid-template-columns:1fr 1fr; flex:1; min-height:0; border-bottom:1px solid rgba(255,255,255,.08); }
-.sm { display:flex; flex-direction:column; align-items:center; justify-content:center; padding:1vmin; gap:.4vmin; position:relative; }
+.sm { display:flex; flex-direction:column; align-items:center; justify-content:center; padding:1vmin; gap:.3vmin; position:relative; }
 .sm:first-child { border-right:1px solid rgba(255,255,255,.08); }
 .sm::before { content:''; position:absolute; top:0; left:0; right:0; height:3px; }
 .sm.cad::before { background:#8aa6ff; }
 .sm.hr::before  { background:#f472b6; }
-.sm-label { font-size:clamp(9px,1.6vmin,14px); font-weight:700; letter-spacing:1.5px; text-transform:uppercase; color:rgba(255,255,255,.5); }
-.sm-val { font-size:clamp(28px,8vmin,80px); font-weight:900; line-height:1; font-variant-numeric:tabular-nums; }
+.sm-label { font-size:clamp(9px,1.4vmin,12px); font-weight:700; letter-spacing:1.5px; text-transform:uppercase; color:rgba(255,255,255,.5); }
+.sm-val { font-size:clamp(32px,9vmin,90px); font-weight:900; line-height:1; font-variant-numeric:tabular-nums; }
 .sm.cad .sm-val { color:#8aa6ff; }
 .sm.hr  .sm-val { color:#f472b6; }
 
 /* AVERAGES */
 .avgs { display:grid; grid-template-columns:1fr 1fr 1fr 1fr; flex-shrink:0; border-bottom:1px solid rgba(255,255,255,.08); }
-.av { display:flex; flex-direction:column; align-items:center; justify-content:center; padding:1.5vmin .5vmin; border-right:1px solid rgba(255,255,255,.08); }
+.av { display:flex; flex-direction:column; align-items:center; justify-content:center; padding:1.2vmin .5vmin; border-right:1px solid rgba(255,255,255,.08); }
 .av:last-child { border-right:none; }
-.av-label { font-size:clamp(8px,1.4vmin,12px); font-weight:700; letter-spacing:.8px; text-transform:uppercase; color:rgba(255,255,255,.45); margin-bottom:2px; }
-.av-val { font-size:clamp(16px,4vmin,36px); font-weight:900; font-variant-numeric:tabular-nums; color:rgba(255,255,255,.8); }
+.av-label { font-size:clamp(7px,1.2vmin,11px); font-weight:700; letter-spacing:.8px; text-transform:uppercase; color:rgba(255,255,255,.45); margin-bottom:2px; }
+.av-val { font-size:clamp(14px,3.5vmin,32px); font-weight:900; font-variant-numeric:tabular-nums; color:rgba(255,255,255,.8); }
 
 /* WORKOUT STRIP */
-.workout-strip { flex-shrink:0; overflow-y:auto; max-height:28vh; border-bottom:1px solid rgba(255,255,255,.08); scrollbar-width:none; }
+.workout-strip { flex-shrink:0; overflow-y:auto; max-height:22vh; border-bottom:1px solid rgba(255,255,255,.08); scrollbar-width:none; }
 .workout-strip::-webkit-scrollbar { display:none; }
-.ws-row { display:flex; align-items:center; gap:1.5vmin; padding:1.2vmin 2.5vmin; border-bottom:1px solid rgba(255,255,255,.05); font-size:clamp(10px,1.8vmin,15px); color:rgba(255,255,255,.4); font-weight:600; }
+.ws-row { display:flex; align-items:center; gap:1.5vmin; padding:1vmin 2.5vmin; border-bottom:1px solid rgba(255,255,255,.05); font-size:clamp(9px,1.6vmin,14px); color:rgba(255,255,255,.4); font-weight:600; }
 .ws-row.current { background:rgba(255,255,255,.06); color:#fff; font-weight:800; }
 .ws-row.done { opacity:.3; }
-.ws-dot { width:clamp(8px,1.4vmin,12px); height:clamp(8px,1.4vmin,12px); border-radius:50%; flex-shrink:0; }
+.ws-dot { width:clamp(7px,1.2vmin,10px); height:clamp(7px,1.2vmin,10px); border-radius:50%; flex-shrink:0; }
 .ws-label { flex:1; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
-.ws-dur { font-size:clamp(9px,1.5vmin,13px); color:rgba(255,255,255,.3); flex-shrink:0; }
+.ws-dur { font-size:clamp(8px,1.3vmin,12px); color:rgba(255,255,255,.3); flex-shrink:0; }
 .ws-row.current .ws-dur { color:rgba(255,255,255,.6); }
 .zone-sprint     { background:#ff5050; }
 .zone-activation { background:#ff8c42; }
@@ -71,23 +71,14 @@ html, body { width: 100%; height: 100%; background: rgba(10,12,18,.95); color: #
 .zone-warmup     { background:#4a5568; }
 
 /* BICI BUBBLE */
-.bici-wrap { padding:1.5vmin 2.5vmin; flex-shrink:0; display:flex; align-items:center; justify-content:space-between; }
+.bici-wrap { padding:1vmin 2.5vmin; flex-shrink:0; display:flex; align-items:center; }
 .bici-bubble {
   display:inline-block; position:relative;
   background:rgba(255,255,255,.08); border:1px solid rgba(255,255,255,.18);
   border-radius:999px;
-  padding:clamp(6px,1.2vmin,12px) clamp(12px,2.5vmin,24px);
-  font-size:clamp(12px,2.4vmin,22px); font-weight:700; font-style:italic;
+  padding:clamp(4px,1vmin,10px) clamp(10px,2vmin,20px);
+  font-size:clamp(11px,2vmin,18px); font-weight:700; font-style:italic;
   color:rgba(255,255,255,.85); letter-spacing:.2px;
-}
-.bici-bubble::before {
-  content:''; position:absolute; bottom:-8px; left:20px;
-  width:10px; height:10px;
-  background:rgba(255,255,255,.08);
-  border-right:1px solid rgba(255,255,255,.18);
-  border-bottom:1px solid rgba(255,255,255,.18);
-  transform:rotate(45deg);
-  clip-path:polygon(0 0,100% 100%,0 100%);
 }
 </style>
 </head>
@@ -95,7 +86,7 @@ html, body { width: 100%; height: 100%; background: rgba(10,12,18,.95); color: #
 <div class="hud">
 
   <div class="step-block">
-    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:.6vmin;">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:.4vmin;">
       <div class="step-name" id="step-name">—</div>
       <div class="wait-badge" id="badge">WAIT</div>
     </div>
