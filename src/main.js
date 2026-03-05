@@ -1,4 +1,4 @@
-const { app, BrowserWindow, ipcMain, shell } = require('electron');
+const { app, BrowserWindow, ipcMain, shell, Menu } = require('electron');
 const path = require('path');
 const fs = require('fs');
 const http = require('http');
@@ -169,6 +169,56 @@ function startServer() {
   return server;
 }
 
+// ── App Menu ──────────────────────────────────────────────────
+function buildMenu() {
+  const template = [
+    {
+      label: 'Bici Butler',
+      submenu: [
+        { label: 'About Bici Butler', role: 'about' },
+        { type: 'separator' },
+        { label: 'Hide Bici Butler', role: 'hide' },
+        { label: 'Hide Others', role: 'hideOthers' },
+        { type: 'separator' },
+        { label: 'Quit Bici Butler', role: 'quit' }
+      ]
+    },
+    {
+      label: 'Workout',
+      submenu: [
+        {
+          label: 'Open Workout Folder',
+          accelerator: 'CmdOrCtrl+O',
+          click: () => { shell.openPath(WORKOUT_DIR); }
+        },
+        { type: 'separator' },
+        {
+          label: 'Reload Workout',
+          accelerator: 'CmdOrCtrl+R',
+          click: () => { reloadWorkout(); }
+        },
+        { type: 'separator' },
+        {
+          label: 'Change FTP…',
+          click: () => {
+            if (!setupWindow) createSetupWindow();
+          }
+        }
+      ]
+    },
+    {
+      label: 'Window',
+      submenu: [
+        { label: 'Minimize', role: 'minimize' },
+        { label: 'Zoom', role: 'zoom' },
+        { type: 'separator' },
+        { label: 'Bring All to Front', role: 'front' }
+      ]
+    }
+  ];
+  Menu.setApplicationMenu(Menu.buildFromTemplate(template));
+}
+
 // ── Setup window ──────────────────────────────────────────────
 function createSetupWindow() {
   setupWindow = new BrowserWindow({
@@ -179,6 +229,7 @@ function createSetupWindow() {
     webPreferences: { nodeIntegration: true, contextIsolation: false }
   });
   setupWindow.loadFile(path.join(__dirname, 'setup.html'));
+  setupWindow.on('closed', () => { setupWindow = null; });
 }
 
 // ── Main HUD window ───────────────────────────────────────────
@@ -199,7 +250,6 @@ function createMainWindow() {
   });
   mainWindow.loadURL('http://127.0.0.1:8787');
 
-  // Save position and size when window moves or resizes
   mainWindow.on('moved', () => {
     const bounds = mainWindow.getBounds();
     store.set('windowBounds', bounds);
@@ -218,7 +268,7 @@ ipcMain.on('ftp-set', (event, ftp) => {
   store.set('ftp', FTP);
   reloadWorkout();
   if (setupWindow) { setupWindow.close(); setupWindow = null; }
-  createMainWindow();
+  if (!mainWindow) createMainWindow();
 });
 
 ipcMain.on('open-workout-folder', () => {
@@ -233,6 +283,7 @@ let httpServer;
 app.whenReady().then(() => {
   httpServer = startServer();
   watchWorkouts();
+  buildMenu();
 
   if (!FTP) {
     createSetupWindow();
