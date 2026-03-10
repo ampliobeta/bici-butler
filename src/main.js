@@ -32,7 +32,7 @@ function parseZwo(filePath) {
     if (!workoutMatch) return [];
     const body = workoutMatch[1];
 
-    const elRegex = /<(\w+)([^\/>"']*)(?:\/?>|>[\s\S]*?<\/\1>)/g;
+    const elRegex = /<(\w+)([^>]*)(?:\/>|>[\s\S]*?<\/\1>)/g;
     let m;
     while ((m = elRegex.exec(body)) !== null) {
       const tag = m[1];
