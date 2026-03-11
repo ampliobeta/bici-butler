@@ -267,6 +267,7 @@ function createMainWindow() {
     webPreferences: { nodeIntegration: false, contextIsolation: true, webSecurity: false }
   });
   mainWindow.loadURL('http://127.0.0.1:8787');
+  mainWindow.webContents.on('context-menu', () => { mainWindow.webContents.openDevTools(); });
 
   mainWindow.on('moved', () => {
     const bounds = mainWindow.getBounds();
