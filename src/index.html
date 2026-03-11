@@ -10,15 +10,15 @@ html, body { width: 100%; height: 100%; background: #0a0c12; color: #fff; font-f
 .hud { width: 100%; height: 100%; display: flex; flex-direction: column; }
 
 /* TOP ROW — interval | step name | badge */
-.top-row { display:flex; align-items:center; justify-content:space-between; padding:.8vmin 2vmin; flex-shrink:0; gap:1vmin; }
-.top-time { display:flex; flex-direction:column; align-items:flex-start; min-width:60px; }
-.top-time-label { font-size:clamp(7px,1.1vmin,10px); font-weight:700; letter-spacing:1.5px; text-transform:uppercase; color:rgba(255,255,255,.4); }
-.top-time-val { font-size:clamp(13px,2.8vmin,26px); font-weight:900; font-variant-numeric:tabular-nums; color:#00d4aa; }
+.top-row { display:flex; align-items:center; justify-content:space-between; padding:1.8vmin 2.5vmin; flex-shrink:0; gap:1vmin; }
+.top-time { display:flex; flex-direction:column; align-items:flex-start; min-width:80px; }
+.top-time-label { font-size:clamp(9px,1.5vmin,13px); font-weight:700; letter-spacing:1.5px; text-transform:uppercase; color:rgba(255,255,255,.4); }
+.top-time-val { font-size:clamp(18px,4vmin,36px); font-weight:900; font-variant-numeric:tabular-nums; color:#00d4aa; }
 .top-center { flex:1; text-align:center; }
-.step-name { font-size:clamp(11px,2.4vmin,22px); font-weight:900; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; color:rgba(255,255,255,.85); }
-.top-right { display:flex; flex-direction:column; align-items:flex-end; min-width:60px; }
-.elapsed-label { font-size:clamp(7px,1.1vmin,10px); font-weight:700; letter-spacing:1.5px; text-transform:uppercase; color:rgba(255,255,255,.4); }
-.elapsed-val { font-size:clamp(13px,2.8vmin,26px); font-weight:900; font-variant-numeric:tabular-nums; color:rgba(255,255,255,.7); }
+.step-name { font-size:clamp(14px,3vmin,28px); font-weight:900; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; color:rgba(255,255,255,.85); }
+.top-right { display:flex; flex-direction:column; align-items:flex-end; min-width:80px; }
+.elapsed-label { font-size:clamp(9px,1.5vmin,13px); font-weight:700; letter-spacing:1.5px; text-transform:uppercase; color:rgba(255,255,255,.4); }
+.elapsed-val { font-size:clamp(18px,4vmin,36px); font-weight:900; font-variant-numeric:tabular-nums; color:rgba(255,255,255,.7); }
 
 /* STATUS + RANGE ROW */
 .status-row { display:flex; align-items:center; justify-content:center; gap:1.5vmin; padding:.3vmin 2vmin .6vmin; flex-shrink:0; border-bottom:1px solid rgba(255,255,255,.08); }
