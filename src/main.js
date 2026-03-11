@@ -149,15 +149,15 @@ function startServer() {
   expressApp.post('/load-zwo', (req, res) => {
     let body = req.body;
     if (typeof body === 'string') { try { body = JSON.parse(body); } catch(e) {} }
-    const filePath = body.path;
-    if (!filePath || !filePath.toLowerCase().endsWith('.zwo')) {
+    const { name, content } = body;
+    if (!name || !name.toLowerCase().endsWith('.zwo') || !content) {
       return res.json({ ok: false, error: 'Not a ZWO file' });
     }
     try {
-      const dest = path.join(WORKOUT_DIR, path.basename(filePath));
-      fs.copyFileSync(filePath, dest);
+      const dest = path.join(WORKOUT_DIR, name);
+      fs.writeFileSync(dest, content, 'utf8');
       STEPS = parseZwo(dest);
-      if (mainWindow) mainWindow.webContents.send('workout-loaded', path.basename(dest));
+      if (mainWindow) mainWindow.webContents.send('workout-loaded', name);
       res.json({ ok: true, steps: STEPS.length });
     } catch(e) {
       res.json({ ok: false, error: e.message });
@@ -264,7 +264,7 @@ function createMainWindow() {
     alwaysOnTop: true,
     movable: true,
     resizable: true,
-    webPreferences: { nodeIntegration: false, contextIsolation: true }
+    webPreferences: { nodeIntegration: false, contextIsolation: true, webSecurity: false }
   });
   mainWindow.loadURL('http://127.0.0.1:8787');
 

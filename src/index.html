@@ -297,16 +297,19 @@ hud.addEventListener('drop', (e) => {
     document.getElementById('bici').textContent = 'That\'s no\' a ZWO file, pal.';
     return;
   }
-  // Send file path to main process via fetch
-  fetch('/load-zwo', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ path: file.path })
-  }).then(r => r.json()).then(d => {
-    if (d.ok) {
-      document.getElementById('bici').textContent = 'Workout loaded. Let\'s go.';
-    }
-  });
+  const reader = new FileReader();
+  reader.onload = (evt) => {
+    fetch('/load-zwo', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ name: file.name, content: evt.target.result })
+    }).then(r => r.json()).then(d => {
+      if (d.ok) {
+        document.getElementById('bici').textContent = 'Workout loaded. Let\'s go.';
+      }
+    });
+  };
+  reader.readAsText(file);
 });
 </script>
 </body>
