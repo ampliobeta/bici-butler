@@ -34,9 +34,9 @@ html, body { width: 100%; height: 100%; background: #0a0c12; color: #fff; font-f
 
 /* WATTS */
 .watts-block { display:flex; flex-direction:column; align-items:center; justify-content:center; flex:1.6; position:relative; min-height:0; }
-.watts-block::before { content:''; position:absolute; top:0; left:0; right:0; height:3px; background:#f472b6; }
+.watts-block::before { content:''; position:absolute; top:0; left:0; right:0; height:3px; background:#00d4aa; }
 .watts-label { font-size:clamp(12px,2.2vmin,20px); font-weight:700; letter-spacing:3px; text-transform:uppercase; color:rgba(255,255,255,.45); margin-bottom:.2vmin; }
-.watts-val { font-size:clamp(70px,22vmin,220px); font-weight:900; line-height:1; font-variant-numeric:tabular-nums; color:#f472b6; }
+.watts-val { font-size:clamp(70px,22vmin,220px); font-weight:900; line-height:1; font-variant-numeric:tabular-nums; color:#00d4aa; }
 
 /* BICI BUBBLE */
 .bici-wrap { padding:.6vmin 2vmin; flex-shrink:0; display:flex; align-items:center; justify-content:center; border-bottom:1px solid rgba(255,255,255,.08); }
@@ -55,11 +55,11 @@ html, body { width: 100%; height: 100%; background: #0a0c12; color: #fff; font-f
 .sm:first-child { border-right:1px solid rgba(255,255,255,.08); }
 .sm::before { content:''; position:absolute; top:0; left:0; right:0; height:3px; }
 .sm.cad::before { background:#8aa6ff; }
-.sm.hr::before  { background:#f472b6; }
+.sm.hr::before  { background:#00d4aa; }
 .sm-label { font-size:clamp(12px,2vmin,18px); font-weight:700; letter-spacing:2px; text-transform:uppercase; color:rgba(255,255,255,.5); }
 .sm-val { font-size:clamp(40px,13vmin,130px); font-weight:900; line-height:1; font-variant-numeric:tabular-nums; }
 .sm.cad .sm-val { color:#8aa6ff; }
-.sm.hr  .sm-val { color:#f472b6; }
+.sm.hr  .sm-val { color:#00d4aa; }
 
 /* AVERAGES */
 .avgs { display:grid; grid-template-columns:1fr 1fr 1fr 1fr; flex-shrink:0; }
