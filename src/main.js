@@ -146,6 +146,24 @@ function startServer() {
     res.json({ ok: true });
   });
 
+  expressApp.post('/load-zwo', (req, res) => {
+    let body = req.body;
+    if (typeof body === 'string') { try { body = JSON.parse(body); } catch(e) {} }
+    const filePath = body.path;
+    if (!filePath || !filePath.toLowerCase().endsWith('.zwo')) {
+      return res.json({ ok: false, error: 'Not a ZWO file' });
+    }
+    try {
+      const dest = path.join(WORKOUT_DIR, path.basename(filePath));
+      fs.copyFileSync(filePath, dest);
+      STEPS = parseZwo(dest);
+      if (mainWindow) mainWindow.webContents.send('workout-loaded', path.basename(dest));
+      res.json({ ok: true, steps: STEPS.length });
+    } catch(e) {
+      res.json({ ok: false, error: e.message });
+    }
+  });
+
   expressApp.get('/status', (req, res) => {
     if (!LAST.ts) {
       return res.json({ ok: false, payload: null, step: null, step_index: null, steps: STEPS });
