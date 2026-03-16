@@ -44,8 +44,8 @@ html, body { width: 100%; height: 100%; background: #0a0c12; color: #fff; font-f
   display:inline-block;
   background:rgba(255,255,255,.07); border:1px solid rgba(255,255,255,.15);
   border-radius:999px;
-  padding:clamp(4px,.8vmin,8px) clamp(10px,2vmin,20px);
-  font-size:clamp(10px,1.8vmin,16px); font-weight:700; font-style:italic;
+  padding:clamp(6px,1.2vmin,12px) clamp(14px,3vmin,28px);
+  font-size:clamp(20px,4.5vmin,42px); font-weight:700; font-style:italic;
   color:rgba(255,255,255,.8);
 }
 
@@ -68,7 +68,7 @@ html, body { width: 100%; height: 100%; background: #0a0c12; color: #fff; font-f
 .av-label { font-size:clamp(10px,1.8vmin,15px); font-weight:700; letter-spacing:.8px; text-transform:uppercase; color:rgba(255,255,255,.4); margin-bottom:1px; }
 .av-val { font-size:clamp(22px,6vmin,56px); font-weight:900; font-variant-numeric:tabular-nums; color:rgba(255,255,255,.8); }
 
-/* WORKOUT STRIP — hidden until connected */
+/* WORKOUT STRIP */
 .workout-strip { flex-shrink:0; overflow-y:auto; max-height:18vh; border-top:1px solid rgba(255,255,255,.08); scrollbar-width:none; display:none; }
 .workout-strip::-webkit-scrollbar { display:none; }
 .ws-row { display:flex; align-items:center; gap:1.5vmin; padding:.9vmin 2vmin; border-bottom:1px solid rgba(255,255,255,.05); font-size:clamp(9px,1.5vmin,13px); color:rgba(255,255,255,.4); font-weight:600; }
@@ -186,12 +186,14 @@ function biciLine(pct, zone) {
 let lastStepIndex = -1;
 let stepsRendered = false;
 let lastBiciUpdate = 0;
+let lastStepCount = 0;
 
 function renderStrip(steps, currentIdx) {
   const strip = document.getElementById('workout-strip');
   if (!steps || steps.length === 0) { strip.style.display = 'none'; return; }
   strip.style.display = 'block';
-  if (!stepsRendered) {
+  // Reset cache when a new workout is loaded
+  if (!stepsRendered || steps.length !== lastStepCount) {
     strip.innerHTML = steps.map((s, i) => `
       <div class="ws-row ${i===currentIdx?'current':i<currentIdx?'done':''}" id="ws-${i}">
         <div class="ws-dot zone-${s.zone}"></div>
@@ -199,6 +201,8 @@ function renderStrip(steps, currentIdx) {
         <div class="ws-dur">${fmtDur(s.duration)}</div>
       </div>`).join('');
     stepsRendered = true;
+    lastStepCount = steps.length;
+    lastStepIndex = -1;
   }
   if (currentIdx !== lastStepIndex) {
     steps.forEach((_, i) => {
@@ -227,6 +231,13 @@ async function tick() {
     if (!s.ok || !s.payload) {
       badge.className = 'wait-badge'; badge.textContent = 'WAIT'; return;
     }
+
+    // Freeze display when TPV is paused (no data for >3s)
+    const stale = s.age_sec > 3;
+    if (stale) {
+      badge.className = 'wait-badge'; badge.textContent = 'PAUSED'; return;
+    }
+
     badge.className = 'live-badge';
     badge.innerHTML = '<div class="dot"></div>LIVE';
 
@@ -263,8 +274,11 @@ async function tick() {
         lastBiciUpdate = now;
       }
     } else {
-      document.getElementById('step-name').textContent = 'Free ride';
-      document.getElementById('remain').textContent = '—';
+      // Only show Free ride if no workout is loaded
+      if (!s.steps || s.steps.length === 0) {
+        document.getElementById('step-name').textContent = 'Free ride';
+        document.getElementById('remain').textContent = '—';
+      }
       document.getElementById('range').textContent = '—';
       document.getElementById('range').className = 'range none';
     }
@@ -306,6 +320,9 @@ hud.addEventListener('drop', (e) => {
     }).then(r => r.json()).then(d => {
       if (d.ok) {
         document.getElementById('bici').textContent = 'Workout loaded. Let\'s go.';
+        // Force strip re-render on new drop
+        stepsRendered = false;
+        lastStepCount = 0;
       }
     });
   };
